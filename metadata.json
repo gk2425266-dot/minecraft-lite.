@@ -1,0 +1,8 @@
+{
+  "name": "VoxelVerse: Next-Gen Sandbox",
+  "description": "An ultra-detailed voxel sandbox survival game featuring procedural biomes, high-fidelity rendering, and AI-powered crafting guidance.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
