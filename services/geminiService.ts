@@ -2,10 +2,14 @@
 import { GoogleGenAI } from "@google/genai";
 
 // Always use const ai = new GoogleGenAI({apiKey: process.env.API_KEY});
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Added safety check to ensure process.env exists in the target environment
+const apiKey = typeof process.env !== 'undefined' ? process.env.API_KEY : '';
 
 export const getAIAdvice = async (prompt: string, currentContext: string) => {
+  if (!apiKey) return "The Oracle's connection is not yet established (Missing API Key).";
+  
   try {
+    const ai = new GoogleGenAI({ apiKey });
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: `You are the VoxelVerse Oracle, a wise guide in a voxel survival game. 
@@ -13,7 +17,6 @@ export const getAIAdvice = async (prompt: string, currentContext: string) => {
       Context: ${currentContext}.
       Keep your answer concise, helpful, and immersive. If they ask about crafting, suggest imaginative recipes using blocks like wood, gold, and stone.`,
     });
-    // The .text property directly returns the string output; do not call it as a method.
     return response.text || "The Oracle is silent today...";
   } catch (error) {
     console.error("Gemini Error:", error);
